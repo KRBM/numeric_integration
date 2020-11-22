@@ -1,4 +1,5 @@
 import numpy as np
+from numpy import sin, pi
 
 
 def two_var(f, s):
@@ -24,8 +25,12 @@ class Integrate:
     def __init__(self, function):
         self.function = function
         self.error = ""
+        self.sign = 1
 
-    def integrate(self, lower, upper, precision=1000):
+    def integral(self, lower, upper, precision=10000):
+        if lower > upper:
+            lower, upper = upper, lower
+            self.sign = -1
         number_of_points = (upper - lower) * precision
         xs = list(np.linspace(lower, upper, int(number_of_points)))
         integral = 0
@@ -50,16 +55,15 @@ class Integrate:
 
         error = super_sum - sub_sum
         self.error = f"{integral - error} < integral < {integral + error}\n"
-        return integral
+        return self.sign * integral
 
     def double_integral(self, limit_list, precision=500):
+        if type(limit_list) != list:
+            raise IntegrationError("The bounds must be given as a list of lists")
         x_list, y_list = limit_list
-        a, b = x_list
-        c, d = y_list
-        x_points = (b - a) * precision
-        y_points = (d - c) * precision
-        xs = list(np.linspace(a, b, int(x_points)))
-        ys = list(np.linspace(c, d, int(y_points)))
+        (a, b), (c, d) = x_list, y_list
+        x_points, y_points = (b - a) * precision, (d - c) * precision
+        xs, ys = list(np.linspace(a, b, int(x_points))), list(np.linspace(c, d, int(y_points)))
         integral = 0
         sub_sum = 0
         super_sum = 0
@@ -67,7 +71,6 @@ class Integrate:
             delta_x = xs[i + 1] - xs[i]
             for j in range(len(ys) - 1):
                 delta_y = ys[j + 1] - ys[j]
-
                 delta = delta_x * delta_y
                 try:
                     last = (xs[i], ys[j])
@@ -94,6 +97,12 @@ if __name__ == "__main__":
     def double(x, y):
         return x * y**2
 
+    def d(x):
+        return sin(x) / x
+
     integrate = Integrate(double)
     result = integrate.double_integral([[0, 3], [1, 2]])
     print(result)
+    integrate = Integrate(d)
+    print(integrate.integral(1, -1))
+    print(integrate.error)

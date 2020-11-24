@@ -21,5 +21,5 @@ print("The result is", result)
 
 ### Calculate the error range
 ```
-    print("\nThe accuracy of this result is", integral.error)
+print("\nThe accuracy of this result is", integral.error)
 ```

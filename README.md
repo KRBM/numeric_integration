@@ -21,6 +21,5 @@ print("The result is", result)
 
 ### Calculate the error range
 ```
-error_range = float(integral.error.split()[-1]) - float(integral.error.split()[0])
-print(f"\nThe accuracy of this result is\n{integral.error} which gives us an error range of +- {error_range}")
+    print("\nThe accuracy of this result is", integral.error)
 ```

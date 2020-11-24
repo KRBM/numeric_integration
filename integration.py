@@ -19,7 +19,7 @@ class IntegrationError(Exception):
 class Integrate:
     def __init__(self, function):
         self.function = function
-        self.error = ""
+        self.error = 0
         self.sign = 1
 
     def integral(self, lower, upper, precision=10000):
@@ -46,8 +46,7 @@ class Integrate:
             except ZeroDivisionError:
                 print(f"\nAvoided pole")
 
-        error = super_sum - sub_sum
-        self.error = f"{integral - error} < integral < {integral + error}\n"
+        self.error = super_sum - sub_sum
         return self.sign * integral
 
     def double_integral(self, limit_list, precision=500):
@@ -78,8 +77,7 @@ class Integrate:
                 except ZeroDivisionError:
                     print(f"\nAvoided pole\n")
 
-        error = super_sum - sub_sum
-        self.error = f"{integral - error} < integral < {integral + error}\n"
+        self.error = super_sum - sub_sum
         return integral
 
 
@@ -99,5 +97,4 @@ if __name__ == "__main__":
     print("The result is", result)
 
     # Calculate the error range
-    error_range = float(integral.error.split()[-1]) - float(integral.error.split()[0])
-    print(f"\nThe accuracy of this result is\n{integral.error} which gives us an error range of +- {error_range}")
+    print("\nThe accuracy of this result is", integral.error)
